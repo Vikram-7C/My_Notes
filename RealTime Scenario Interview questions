@@ -1,0 +1,36 @@
+trigger ContactTrigger on Contact (
+    after insert,
+    after update,
+    after delete,
+    after undelete
+) {
+    if (Trigger.isAfter) {
+        if (Trigger.isInsert) {
+            ContactTriggerHandler.updateAccountContactCount(
+                Trigger.new,
+                null
+            );
+        }
+
+        if (Trigger.isUpdate) {
+            ContactTriggerHandler.updateAccountContactCount(
+                Trigger.new,
+                Trigger.oldMap
+            );
+        }
+
+        if (Trigger.isDelete) {
+            ContactTriggerHandler.updateAccountContactCount(
+                null,
+                Trigger.oldMap
+            );
+        }
+
+        if (Trigger.isUndelete) {
+            ContactTriggerHandler.updateAccountContactCount(
+                Trigger.new,
+                null
+            );
+        }
+    }
+}
