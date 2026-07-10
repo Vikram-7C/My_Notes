@@ -39,11 +39,8 @@ public with sharing class ContactTriggerHandler {
         // Update
         if (newList != null && oldMap != null) {
             for (Contact newCon : newList) {
-
                 Contact oldCon = oldMap.get(newCon.Id);
-
                 if (newCon.AccountId != oldCon.AccountId) {
-
                     if (newCon.AccountId != null) {
                         accountIds.add(newCon.AccountId);
                     }
