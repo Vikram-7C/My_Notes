@@ -19,7 +19,7 @@ trigger ContactTrigger on Contact (after insert, after update, after delete, aft
 
 public with sharing class ContactTriggerHandler {
 
-    public static void updateAccountContactCount(List<Contact> newList, Map<Id, Contact> oldMap) {
+    public static void updateAccountContactCount( List<Contact> newList, Map<Id, Contact> oldMap) {
         Set<Id> accountIds = new Set<Id>();
 
         // Insert & Undelete
