@@ -59,8 +59,7 @@ public with sharing class ContactTriggerHandler {
         Map<Id, Integer> contactCountMap = new Map<Id, Integer>();
 
         for (AggregateResult ar : [ SELECT AccountId, COUNT(Id) totalContacts FROM ContactWHERE AccountId IN :accountIds
-            GROUP BY AccountId
-        ]) {
+            GROUP BY AccountId ]) {
             contactCountMap.put(
                 (Id) ar.get('AccountId'),
                 (Integer) ar.get('totalContacts')
