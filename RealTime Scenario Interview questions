@@ -22,8 +22,7 @@ trigger ContactTrigger on Contact (after insert, after update, after delete, aft
         }
 
         if (Trigger.isUndelete) {
-            ContactTriggerHandler.updateAccountContactCount(Trigger.new,null)
-            );
+            ContactTriggerHandler.updateAccountContactCount(Trigger.new,null) );
         }
     }
 }
