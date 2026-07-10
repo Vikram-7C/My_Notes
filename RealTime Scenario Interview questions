@@ -28,7 +28,6 @@ public with sharing class ContactTriggerHandler {
                 }
             }
         }
-
         // Delete
         if (newList == null && oldMap != null) {
             for (Contact con : oldMap.values()) {
