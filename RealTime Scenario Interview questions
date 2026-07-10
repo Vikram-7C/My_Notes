@@ -2,8 +2,7 @@ trigger ContactTrigger on Contact (after insert, after update, after delete, aft
     if (Trigger.isAfter) {
         if (Trigger.isInsert) {
             ContactTriggerHandler.updateAccountContactCount(
-                Trigger.new,
-                null );
+                Trigger.new, null );
         }
 
         if (Trigger.isUpdate) {
