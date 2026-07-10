@@ -60,8 +60,7 @@ public with sharing class ContactTriggerHandler {
 
         for (AggregateResult ar : [ SELECT AccountId, COUNT(Id) totalContacts FROM ContactWHERE AccountId IN :accountIds
                                    GROUP BY AccountId ]) {
-            contactCountMap.put( (Id) ar.get('AccountId'),(Integer) ar.get('totalContacts')
-            );
+            contactCountMap.put( (Id) ar.get('AccountId'),(Integer) ar.get('totalContacts') );
         }
 
         List<Account> accountsToUpdate = new List<Account>();
