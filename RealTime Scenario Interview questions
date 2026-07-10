@@ -16,8 +16,7 @@ trigger ContactTrigger on Contact (after insert, after update, after delete, aft
 
         if (Trigger.isDelete) {
             ContactTriggerHandler.updateAccountContactCount(
-                null,
-                Trigger.oldMap
+                null, Trigger.oldMap
             );
         }
 
