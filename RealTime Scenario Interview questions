@@ -44,7 +44,6 @@ public with sharing class ContactTriggerHandler {
                     if (newCon.AccountId != null) {
                         accountIds.add(newCon.AccountId);
                     }
-
                     if (oldCon.AccountId != null) {
                         accountIds.add(oldCon.AccountId);
                     }
