@@ -1,0 +1,307 @@
+1. Governor Limists
+
+| Governor Limit                   |   Synchronous Apex |                  Asynchronous Apex |
+| -------------------------------- | -----------------: | ---------------------------------: |
+| **SOQL Queries**                 |                 100|                                 200|
+| **SOSL Queries**                 |                 20 |                                 20 |
+| **DML Statements**               |                150 |                                150 |
+| **Records Processed by DML**     |             10,000 |                             10,000 |
+| **Heap Size**                    |               6 MB |                              12 MB |
+| **CPU Time**                     | 10,000 ms (10 sec) |                 60,000 ms (60 sec) |
+| **Callouts (HTTP/Web Service)**  |                100 |                                100 |
+| **Maximum Query Rows Retrieved** |             50,000 |                             50,000 |
+| **Maximum Future Method Calls**  |                 50 |                                N/A |
+| **Queueable Jobs Added**         |                 50 |    1 (from within a Queueable job) |
+| **Batch Apex Execute Scope**     |                N/A | Default: 200 records per execute() |
+
+
+
+-> Governor limits are shared by the entire transaction, not by individual classes or methods.
+ex:- If a Trigger calls a Handler, and the Handler calls a Helper, and the Helper calls a Utility class, Salesforce counts all SOQL queries together.
+
+Trigger
+   ↓
+Handler Class   → 98 SOQL queries
+   ↓
+Helper Class    → 10 SOQL queries
+   ↓
+Utility Class   → 5 SOQL queries
+
+Total SOQL Queries = 98 + 10 + 5 = 113
+
+Governor Limit ;-
+Synchronous Apex (Triggers, Controllers): 100 SOQL queries
+Asynchronous Apex (Future, Queueable, Batch): 200 SOQL queries
+
+Result:- Since a trigger runs synchronously:
+
+Total queries = 113
+Limit = 100
+Transaction fails
+
+Error:
+System.LimitException: Too many SOQL queries: 101
+
+Salesforce throws the exception when the 101st query is executed, and the entire transaction is rolled back.
+
+==================================================================================================================================================
+==================================================================================================================================================
+
+2. Salesforce Best Practices
+
+1. Never write SOQL queries inside loops.
+2. Never perform DML operations inside loops.
+3. Always bulkify your code to handle multiple records (up to 200).
+4. Query only the fields you actually need.
+5. Query data once and reuse it instead of querying repeatedly.
+6. Use Set to remove duplicates and collect unique IDs.
+7. Use Map for fast record lookups instead of nested loops.
+8. Process records in collections (List, Set, Map), not one by one.
+9. Avoid nested loops whenever possible to improve performance.
+10. Move heavy processing to asynchronous Apex (Queueable, Batch, Future).
+11. Use a Trigger Handler framework—keep triggers logic-free.
+12. Keep only one trigger per object.
+13. Write reusable business logic in helper/service classes.
+14. Avoid hardcoding IDs, URLs, or values—use Custom Metadata or Custom Settings.
+15. Use constants instead of repeating literal values throughout the code.
+16. Handle exceptions using try-catch where appropriate.
+17. Always write unit tests with meaningful assertions.
+18. Avoid recursive trigger execution by implementing recursion control.
+19. Use selective SOQL queries to improve query performance.
+20. Monitor governor limits using the Limits class during development.
+21. Use Database methods (Database.insert, Database.update, etc.) when partial success is required.
+22. Follow the Single Responsibility Principle—each class should have one purpose.
+23. Keep methods small, readable, and reusable.
+24. Use meaningful class, method, and variable names.
+25. Write comments only when they add value; let clean code explain itself.
+26. Always consider governor limits while designing your solution, not after writing the code.
+
+
+
+3. Relationships
+
+I.   Lookup Relationship
+II.  Master-Detail Relationship
+III. Many-to-Many Relationship (using a Junction Object)
+
+1. Lookup Relationship
+------------------------------------------------------------
+
+Definition
+- A loose relationship between two objects.
+- The child record can exist without a parent.
+- Parent and child are independent.
+
+Characteristics
+- Parent record is optional (unless marked Required).
+- Deleting the parent does NOT delete the child.
+- Each object has its own Owner.
+- Separate Sharing and Security.
+- Roll-Up Summary fields are NOT supported.
+- Maximum 40 Lookup relationships per object.
+
+Example
+Account (Parent)
+    ↑
+Contact (Child)
+
+A Contact may or may not be linked to an Account.
+
+Another Example
+Employee --> Manager
+
+An employee can have a manager, but the employee record still exists even if the manager record is deleted.
+
+II. Master-Detail Relationship
+------------------------------------------------------------
+
+Definition
+- A tightly coupled relationship.
+- Child record cannot exist without the parent.
+
+Characteristics
+- Parent is mandatory.
+- Deleting the parent automatically deletes all child records.
+- Child inherits Owner from Parent.
+- Child inherits Sharing and Security.
+- Roll-Up Summary fields are supported.
+- Maximum 2 Master-Detail relationships per object.
+
+Example
+Account (Master)
+    ↑
+Invoice (Detail)
+
+If the Account is deleted, all related Invoices are also deleted.
+
+Another Example
+Order (Master)
+    ↑
+Order Line Item (Detail)
+
+Deleting the Order deletes all Order Line Items.
+
+
+III. Many-to-Many Relationship
+------------------------------------------------------------
+
+Definition
+- Allows multiple records of one object to be related to multiple records of another object.
+
+How it is created
+- By using a Junction Object.
+- The Junction Object contains two Master-Detail relationships.
+
+Example
+
+Student
+   ↑
+Enrollment (Junction Object)
+   ↓
+Course
+
+One Student can enroll in many Courses.
+One Course can have many Students.
+
+Example Data
+
+Student A -> Java
+Student A -> Apex
+Student B -> Apex
+Student B -> LWC
+
+Iv. 4. Self Relationship
+------------------------------------------------------------
+
+Definition
+- An object has a relationship with itself.
+- Implemented using a Lookup Relationship.
+
+Example
+
+Employee
+   ↑
+Manager (Employee)
+
+OR
+
+Account
+   ↑
+Parent Account
+
+A company can have another company as its parent.
+
+V. Hierarchical Relationship
+------------------------------------------------------------
+
+Definition
+- Special relationship available ONLY on the User object.
+
+Characteristics
+- User can reference another User.
+- Used to define organizational hierarchy.
+
+Example
+
+CEO
+ ↑
+Manager
+ ↑
+Employee
+
+Every Employee can have a Manager.
+
+
+=====================================================================
+
+Lookup vs Master-Detail
+------------------------------------------------------------
+
+Parent Required?
+Lookup          : No
+Master-Detail   : Yes
+
+Child Exists Without Parent?
+Lookup          : Yes
+Master-Detail   : No
+
+Delete Parent
+Lookup          : Child remains
+Master-Detail   : Child is deleted
+
+Owner
+Lookup          : Separate Owner
+Master-Detail   : Child inherits Parent Owner
+
+Sharing
+Lookup          : Separate
+Master-Detail   : Inherited from Parent
+
+Roll-Up Summary
+Lookup          : Not Supported
+Master-Detail   : Supported
+
+Maximum per Object
+Lookup          : 40
+Master-Detail   : 2
+
+
+================================================================
+
+Relationship Query Examples
+------------------------------------------------------------
+
+Child to Parent
+
+SELECT Id, Name, Account.Name FROM Contact
+
+Get Parent fields Using dot notation.
+
+Parent to Child
+
+SELECT Name, (SELECT LastName FROM Contacts) FROM Account
+
+get Child records Using a nested subquery.
+
+
+Real-Time Salesforce Examples
+------------------------------------------------------------
+
+Account -> Contact
+Relationship: Lookup
+
+Account -> Opportunity
+Relationship: Lookup
+
+Account -> Case
+Relationship: Lookup
+
+Account -> Invoice (Custom)
+Relationship: Master-Detail
+
+Order -> Order Line Item
+Relationship: Master-Detail
+
+Campaign -> Campaign Member
+Relationship: Junction Object (Many-to-Many between Campaign and Lead/Contact)
+
+User -> Manager
+Relationship: Hierarchical
+
+Account -> Parent Account
+Relationship: Self Relationship
+
+Student -> Enrollment -> Course
+Relationship: Many-to-Many
+
+------------------------------------------------------------
+Interview Tips
+------------------------------------------------------------
+
+1. Lookup = Loose relationship.
+2. Master-Detail = Strong relationship.
+3. Roll-Up Summary works only with Master-Detail.
+4. Cascade Delete happens only in Master-Detail.
+5. Many-to-Many is created using a Junction Object.
+6. Hierarchical Relationship is available only on the User object.
+7. Self Relationship is implemented using a Lookup on the same object.
