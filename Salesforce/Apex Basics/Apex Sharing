@@ -1,0 +1,496 @@
+============================================================
+with sharing | without sharing | inherited sharing
+============================================================
+
+These keywords control Record-Level Security in Apex.
+
+They DO NOT control:
+- Object-Level Security (CRUD)
+- Field-Level Security (FLS)
+
+They only control:
+- Record-Level Security
+
+============================================================
+1. with sharing
+============================================================
+
+Definition
+- Executes Apex by respecting the current user's record access.
+
+Result
+- User can access only the records they are allowed to see.
+
+Syntax
+
+public with sharing class AccountService {
+
+}
+
+Example
+
+OWD for Account = Private
+
+Admin owns:
+- Account A
+- Account B
+
+Sales User owns:
+- Account C
+
+Code
+
+List<Account> accs = [SELECT Name FROM Account];
+
+Result
+
+Admin
+Returns:
+A
+B
+C
+
+Sales User
+Returns:
+C
+
+Reason
+The class respects sharing rules.
+
+Use When
+- Lightning Controllers
+- REST APIs
+- Aura/LWC Controllers
+- Business logic accessed by users
+- Almost all application code
+
+============================================================
+2. without sharing
+============================================================
+
+Definition
+- Ignores Record-Level Sharing.
+
+Result
+- Runs in System Context.
+
+Syntax
+
+public without sharing class AccountService {
+
+}
+
+Example
+
+OWD = Private
+
+Admin owns:
+A
+B
+
+Sales User owns:
+C
+
+Query
+
+SELECT Name FROM Account
+
+Result
+
+Admin
+A
+B
+C
+
+Sales User
+A
+B
+C
+
+Reason
+Sharing rules are ignored.
+
+Important
+
+without sharing DOES NOT bypass
+
+- CRUD Permissions
+- Field Level Security
+
+Those must still be enforced separately.
+
+Use When
+
+- Admin Utilities
+- Background Processing
+- Data Migration
+- Batch Jobs
+- Trusted Internal Processes
+
+============================================================
+3. inherited sharing
+============================================================
+
+Definition
+
+The class inherits the sharing mode of the calling class.
+
+Syntax
+
+public inherited sharing class AccountService {
+
+}
+
+Scenario 1
+
+Controller
+
+public with sharing class Controller
+
+↓
+
+Calls
+
+public inherited sharing class Service
+
+Result
+
+Runs WITH sharing.
+
+------------------------------------------------------------
+
+Scenario 2
+
+Controller
+
+public without sharing class Controller
+
+↓
+
+Calls
+
+public inherited sharing class Service
+
+Result
+
+Runs WITHOUT sharing.
+
+------------------------------------------------------------
+
+Reason
+
+The Service class follows whatever sharing mode the caller uses.
+
+Use When
+
+Reusable service classes.
+
+============================================================
+Comparison
+============================================================
+
+with sharing
+
+Respects Record Sharing?
+Yes
+
+Current User Access?
+Yes
+
+System Context?
+No
+
+Recommended?
+Yes
+
+------------------------------------------------------------
+
+without sharing
+
+Respects Record Sharing?
+No
+
+Current User Access?
+Ignored
+
+System Context?
+Yes
+
+Recommended?
+Only when required.
+
+------------------------------------------------------------
+
+inherited sharing
+
+Respects Sharing?
+Depends on caller.
+
+System Context?
+Depends on caller.
+
+Recommended?
+Yes for reusable classes.
+
+============================================================
+Interview Example
+============================================================
+
+OWD = Private
+
+Accounts
+
+A (Admin)
+
+B (Admin)
+
+C (Sales)
+
+--------------------------------
+
+Class
+
+with sharing
+
+Sales User Query
+
+SELECT Name FROM Account
+
+Result
+
+C
+
+--------------------------------
+
+Class
+
+without sharing
+
+Sales User Query
+
+SELECT Name FROM Account
+
+Result
+
+A
+B
+C
+
+============================================================
+Important Notes
+============================================================
+
+with sharing
+✓ Checks Record-Level Security
+
+without sharing
+✗ Ignores Record-Level Security
+
+Both of them
+
+✗ Do NOT automatically enforce
+
+- Object Permissions (CRUD)
+- Field-Level Security (FLS)
+
+============================================================
+How to enforce CRUD & FLS
+============================================================
+
+Use one of these:
+
+1. WITH USER_MODE
+2. WITH SECURITY_ENFORCED
+3. Security.stripInaccessible()
+
+These are separate from
+- with sharing
+- without sharing
+
+============================================================
+Interview Tips
+============================================================
+
+1. with sharing = Respects Record-Level Security.
+2. without sharing = Ignores Record-Level Security.
+3. inherited sharing = Uses the caller's sharing mode.
+4. These keywords affect only Record-Level Security.
+5. CRUD and FLS must be enforced separately.
+6. Prefer "with sharing" or "inherited sharing" unless you have a specific need for "without sharing".
+
+
+
+==========================
+
+Record-Level Security
+---------------------
+with sharing
+without sharing
+inherited sharing
+
+Object & Field Security
+-----------------------
+WITH USER_MODE
+WITH SECURITY_ENFORCED
+Security.stripInaccessible()
+
+==============================================================================================
+==============================================================================================
+==============================================================================================
+
+Real-Life Analogy
+
+Imagine you are a security guard.
+
+with sharing → "I will always follow the company's security rules."
+without sharing → "I will ignore the security rules."
+inherited sharing → "I'll do whatever my manager tells me."
+
+So, inherited sharing has no opinion of its own.
+
+
+Example 1 - Called from a with sharing class
+public with sharing class AccountController {
+
+    public static void getAccounts() {
+        AccountService.getAccounts();
+    }
+}
+
+Service class
+
+public inherited sharing class AccountService {
+
+    public static void getAccounts() {
+
+        List<Account> accounts = [
+            SELECT Id, Name
+            FROM Account
+        ];
+
+        System.debug(accounts);
+    }
+}
+Suppose
+
+OWD = Private
+
+Accounts
+
+Admin owns
+-----------
+Google
+Microsoft
+
+Sales User owns
+---------------
+Apple
+
+Current user = Sales User
+
+Execution
+
+AccountController
+(with sharing)
+
+        ↓
+
+AccountService
+(inherited sharing)
+
+Since the caller is with sharing, the service also behaves as with sharing.
+
+Result
+
+Apple
+
+Only one record is returned.
+
+
+Example 2 - Called from a without sharing class
+
+Controller
+
+public without sharing class AdminController {
+
+    public static void getAccounts() {
+        AccountService.getAccounts();
+    }
+}
+
+Service
+
+public inherited sharing class AccountService {
+
+    public static void getAccounts() {
+
+        List<Account> accounts = [
+            SELECT Id, Name
+            FROM Account
+        ];
+
+        System.debug(accounts);
+    }
+}
+
+Execution
+
+AdminController
+(without sharing)
+
+        ↓
+
+AccountService
+(inherited sharing)
+
+Now the service becomes without sharing.
+
+Result
+
+Google
+Microsoft
+Apple
+
+All records are returned.
+
+Same Service Class, Different Results
+
+Notice that we didn't change the AccountService class at all.
+
+public inherited sharing class AccountService
+
+The only thing that changed was who called it.
+
+| Caller            | Service behaves as |
+| ----------------- | ------------------ |
+| `with sharing`    | `with sharing`     |
+| `without sharing` | `without sharing`  |
+
+
+That's why it's called inherited sharing—it inherits the caller's sharing mode.
+
+======================
+Easy Trick to Remember
+=======================
+
+with sharing
+↓
+"I will always respect record sharing."
+
+without sharing
+↓
+"I will always ignore record sharing."
+
+inherited sharing
+↓
+"I will do whatever my caller/manager is doing."
+
+
+
+Interview Question :-
+
+Q: Why not simply use with sharing everywhere?
+
+Answer: Because some service classes are reused by different entry points. One caller may need to respect sharing, while another trusted process (such as an admin utility) may intentionally run without sharing. inherited sharing allows the same service class to work correctly in both scenarios without duplicating code.
+
+
