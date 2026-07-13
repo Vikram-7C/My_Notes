@@ -1,0 +1,269 @@
+============================================================
+SALESFORCE SECURITY MODEL
+============================================================
+
+Salesforce Security is divided into four levels.
+
+1. Organization Level
+2. Object Level
+3. Field Level
+4. Record Level
+
+------------------------------------------------------------
+1. Organization Level Security
+------------------------------------------------------------
+
+Purpose
+- Controls who can log in to Salesforce.
+
+Controlled By
+- Login Hours
+- Login IP Ranges
+- Password Policies
+- Session Settings
+- Multi-Factor Authentication (MFA)
+
+Example
+User can log in only between 9:00 AM and 6:00 PM.
+
+------------------------------------------------------------
+2. Object Level Security
+------------------------------------------------------------
+
+Purpose
+- Controls what actions a user can perform on an object.
+
+Controlled By
+- Profiles
+- Permission Sets
+
+Permissions
+
+Create
+Read
+Edit
+Delete
+View All
+Modify All
+
+Example
+
+Account Object
+
+Read    ✔
+Create  ✔
+Edit    ✘
+Delete  ✘
+
+User can view Accounts but cannot edit or delete them.
+
+------------------------------------------------------------
+3. Field Level Security (FLS)
+------------------------------------------------------------
+
+Purpose
+- Controls access to individual fields.
+
+Controlled By
+- Profiles
+- Permission Sets
+
+Permissions
+
+Visible
+Read Only
+Hidden
+
+Example
+
+Salary__c
+
+Admin      -> Visible + Editable
+HR         -> Visible + Editable
+Sales Rep  -> Hidden
+
+Another Example
+
+Phone
+
+Admin      -> Editable
+Sales      -> Read Only
+
+------------------------------------------------------------
+4. Record Level Security
+------------------------------------------------------------
+
+Purpose
+- Controls which individual records a user can access.
+
+Controlled By
+
+1. Organization-Wide Defaults (OWD)
+2. Role Hierarchy
+3. Sharing Rules
+4. Manual Sharing
+5. Teams
+6. Apex Managed Sharing
+7. Restriction Rules
+
+Example
+
+There are 1000 Accounts.
+
+Sales User A
+Can see only 100 Accounts.
+
+Sales User B
+Can see only 80 Accounts.
+
+Object permission allows access to Accounts,
+but Record Level Security decides WHICH Accounts.
+
+============================================================
+PROFILE
+============================================================
+
+Definition
+
+A Profile defines the baseline permissions for a user.
+
+Every user must have exactly ONE Profile.
+
+Profile Controls
+
+- Object Permissions
+- Field Permissions
+- App Access
+- Tab Visibility
+- Record Type Access
+- Login Hours
+- Login IP Ranges
+- System Permissions
+
+Example
+
+Sales Profile
+
+Accounts      Read, Create
+Contacts      Read
+Leads         Read, Edit
+Cases         No Access
+
+============================================================
+PERMISSION SET
+============================================================
+
+Definition
+
+A Permission Set gives ADDITIONAL permissions.
+
+It cannot remove permissions.
+
+A user can have multiple Permission Sets.
+
+Example
+
+Profile
+
+Account
+Read Only
+
+Permission Set
+
+Account
+Edit
+
+Result
+
+User can Edit Accounts.
+
+Permission Set always adds permissions.
+
+============================================================
+PROFILE vs PERMISSION SET
+============================================================
+
+Profile
+- Mandatory
+- One per User
+- Defines baseline permissions
+- Can grant and restrict access
+
+Permission Set
+- Optional
+- Multiple per User
+- Adds extra permissions only
+- Cannot reduce existing access
+
+============================================================
+OBJECT LEVEL SECURITY
+============================================================
+
+Permissions
+
+Read
+Create
+Edit
+Delete
+View All
+Modify All
+
+Meaning
+
+Read
+Can view records.
+
+Create
+Can create records.
+
+Edit
+Can update records.
+
+Delete
+Can delete records.
+
+View All
+Can view every record of that object, ignoring sharing.
+
+Modify All
+Can edit/delete every record of that object, ignoring sharing.
+
+============================================================
+FIELD LEVEL SECURITY
+============================================================
+
+Three possibilities
+
+Visible + Editable
+
+Visible + Read Only
+
+Hidden
+
+Example
+
+Annual Revenue
+
+Admin
+Editable
+
+Sales
+Read Only
+
+Intern
+Hidden
+
+============================================================
+INTERVIEW TIPS
+============================================================
+
+1. Every user must have exactly one Profile.
+2. A user can have multiple Permission Sets.
+3. Permission Sets can only grant access, never remove it.
+4. Profiles and Permission Sets control Object and Field permissions.
+5. Object access answers "What can the user do?"
+6. Field access answers "Which fields can the user access?"
+7. Record access answers "Which records can the user access?"
+8. Login Hours and Login IP Ranges are controlled by Profiles.
+9. View All ignores sharing for viewing records.
+10. Modify All ignores sharing for viewing, editing, and deleting records.
