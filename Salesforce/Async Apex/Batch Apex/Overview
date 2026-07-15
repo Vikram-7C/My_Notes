@@ -50,7 +50,6 @@ That's exactly what Batch Apex does.
 Suppose you have 5,000 Accounts
 
 Batch size = 200
-
 Salesforce automatically divides them like this
 
 Transaction 1
