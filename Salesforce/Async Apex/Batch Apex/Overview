@@ -47,9 +47,7 @@ That's exactly what Batch Apex does.
 
 2. What is Batch Apex doing internally?
 
-Suppose you have
-
-5,000 Accounts
+Suppose you have 5,000 Accounts
 
 Batch size = 200
 
