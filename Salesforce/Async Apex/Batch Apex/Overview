@@ -24,7 +24,6 @@ Update all Accounts where Industry = 'Technology' and set Rating = 'Hot'.
 If you write
 
 List<Account> accs = [SELECT Id, Rating FROM Account];
-
 for(Account a : accs){
     a.Rating='Hot';
 }
