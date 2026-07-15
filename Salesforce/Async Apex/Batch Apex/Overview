@@ -31,7 +31,6 @@ for(Account a : accs){
 update accs;
 
 Salesforce will throw
-
 -> Too many query rows: 50001
 
 because Apex can only query 50,000 records synchronously.
