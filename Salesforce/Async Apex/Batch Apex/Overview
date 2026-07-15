@@ -17,11 +17,8 @@ Best practices
 Common interview questions
 
 1. What is Batch Apex?
-
 Imagine your company has 8 million Accounts.
-
 Your manager says:
-
 Update all Accounts where Industry = 'Technology' and set Rating = 'Hot'.
 
 If you write
