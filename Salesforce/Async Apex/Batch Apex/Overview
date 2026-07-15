@@ -535,25 +535,20 @@ Recalculate summary fields for all records.
 
 Do not use Batch Apex when:
 
-1. Small number of records
-100 Accounts
-
+1. Small number of records 
+ex:- 100 Accounts
 A normal Apex class is simpler and faster.
 
 2. Trigger processing
-
 Never call a batch from a trigger for every transaction. Triggers should complete quickly, and starting many batch jobs can hit asynchronous job limits.
 
 3. Immediate user response is required
-
 If the user clicks Save and expects the result immediately, Batch Apex is the wrong choice because it runs asynchronously.
 
 4. Chained business logic
-
 If multiple steps must happen immediately in the same transaction, Batch Apex isn't appropriate.
 
 5. Processing a few thousand records
-
 If you have only a few thousand records and the processing is lightweight, Queueable Apex is often a better choice because it's easier to write and monitor.
 
 ================================================================================
