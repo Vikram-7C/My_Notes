@@ -41,9 +41,7 @@ Too many DML rows:10001
 because one transaction can update only 10,000 records.
 
 Salesforce says "Don't process millions of records in one transaction."
-Instead,
-
-Break them into smaller transactions.
+Instead, Break them into smaller transactions.
 
 That's exactly what Batch Apex does.
 
