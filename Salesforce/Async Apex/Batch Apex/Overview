@@ -73,7 +73,7 @@ Transaction 25
 Each transaction has its own governor limits.
 
 That's the biggest advantage.
-
+================================================================================
 3. Why Batch Apex?
 
 Suppose
