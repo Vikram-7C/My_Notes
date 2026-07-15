@@ -105,6 +105,8 @@ again and again
 
 That's why Batch can process millions of records.
 
+================================================================================
+
 4. Batch Apex Interface
 
 Every Batch class implements
