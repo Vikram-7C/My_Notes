@@ -409,8 +409,7 @@ To prevent unauthorized access and ensure controlled modification.
 
 Q3. How is Encapsulation achieved in Apex?
 
-Answer 
-Using
+Answer Using
 
 • private variables
 
