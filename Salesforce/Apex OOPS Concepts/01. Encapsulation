@@ -387,11 +387,7 @@ Answer Yes, Because users cannot directly modify internal data.
 
 Q5. Can we achieve Encapsulation without getter/setter methods?
 
-Answer
-
-Yes.
-
-Using Apex Properties.
+Answer :- Yes, Using Apex Properties.
 
 Example
 
