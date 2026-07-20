@@ -332,9 +332,7 @@ Always use methods.
 
 Suppose you are developing an Opportunity Discount feature.
 
-Business Rule 
-
-Discount cannot exceed 30%.
+Business Rule Discount cannot exceed 30%.
 
 Wrong
 
