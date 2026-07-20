@@ -433,9 +433,7 @@ Protect data and enforce business rules.
 
 How :- 
 private variables
-
 public methods
-
 getter/setter properties
 
 Advantages
