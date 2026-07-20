@@ -401,7 +401,7 @@ direct access to data.
 
 Q2. Why do we use private variables?
 
-Answer
+Answer 
 
 To prevent unauthorized access and ensure controlled modification.
 
