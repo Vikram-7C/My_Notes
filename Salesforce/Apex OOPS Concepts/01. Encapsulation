@@ -425,9 +425,7 @@ Intermediate
 
 Q4. Can Encapsulation improve security?
 
-Answer
-
-Yes.
+Answer Yes.
 
 Because users cannot directly modify internal data.
 
