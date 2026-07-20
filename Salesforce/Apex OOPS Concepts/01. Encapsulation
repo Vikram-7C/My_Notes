@@ -307,9 +307,7 @@ Mistake 1
 
 Making every variable public.
 
-Wrong
-
-public Decimal salary;
+Wrong :- public Decimal salary;
 
 Correct
 
