@@ -253,15 +253,10 @@ This protects data integrity.
 1. Protects data.
 2. Prevents invalid values.
 3. Improves security.
-
 4. Easier maintenance.
-
 5. Reduces bugs.
-
 6. Centralizes validation.
-
 7. Makes code reusable.
-
 8. Hides implementation details.
 
 ============================================================
