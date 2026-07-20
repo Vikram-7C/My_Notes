@@ -314,7 +314,6 @@ Correct :- private Decimal salary;
 Mistake 2
 
 No validation.
-
 salary = -1000;
 
 Always validate.
