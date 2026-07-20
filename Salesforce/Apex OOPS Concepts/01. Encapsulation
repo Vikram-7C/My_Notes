@@ -437,11 +437,8 @@ public methods
 getter/setter properties
 
 Advantages
-
 ✔ Security
-
 ✔ Validation
-
 ✔ Maintainability
 
 ✔ Reusability
