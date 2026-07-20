@@ -9,3 +9,5 @@ Encapsulation actually has three parts:
 2. Hide the internal data.
 3. Control access through methods or properties.
 
+
+
