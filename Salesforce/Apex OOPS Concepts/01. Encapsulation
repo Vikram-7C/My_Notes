@@ -395,9 +395,7 @@ Example :- public String Name {get; set;}
 Advanced
 
 Q6. Why is Encapsulation important in enterprise applications?
-Answer
-
-Because business rules remain centralized, data stays consistent,
+Answer :- Because business rules remain centralized, data stays consistent,
 and unauthorized modifications are prevented.
 
 ============================================================
