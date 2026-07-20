@@ -389,9 +389,7 @@ Q5. Can we achieve Encapsulation without getter/setter methods?
 
 Answer :- Yes, Using Apex Properties.
 
-Example
-
-public String Name {get; set;}
+Example :- public String Name {get; set;}
 
 ----------------------------------------------------
 
