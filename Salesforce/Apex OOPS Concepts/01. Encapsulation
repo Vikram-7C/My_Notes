@@ -373,9 +373,7 @@ Q3. How is Encapsulation achieved in Apex?
 Answer: Using
 
 • private variables
-
 • public methods
-
 • getter/setter properties
 
 ----------------------------------------------------
