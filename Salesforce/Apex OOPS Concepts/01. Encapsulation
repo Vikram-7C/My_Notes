@@ -7,5 +7,5 @@ Encapsulation actually has three parts:
 
 1. Bundle data and methods into one class.
 2. Hide the internal data.
-Control access through methods or properties.
+3. Control access through methods or properties.
 
