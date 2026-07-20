@@ -1,2 +1,12 @@
 Note:- Encapsulation - Hide data and expose it through methods.
 
+Many developers think Encapsulation = private variables.
+
+That's not completely correct.
+
+Encapsulation actually has three parts:
+
+Bundle data and methods into one class.
+Hide the internal data.
+Control access through methods or properties.
+
