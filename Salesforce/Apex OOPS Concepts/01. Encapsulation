@@ -306,12 +306,8 @@ Properties are cleaner and commonly used in Apex.
 Mistake 1
 
 Making every variable public.
-
 Wrong :- public Decimal salary;
-
-Correct
-
-private Decimal salary;
+Correct :- private Decimal salary;
 
 ------------------------------------
 
