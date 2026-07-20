@@ -427,11 +427,11 @@ directly.
 
 Definition :- 
 Hide data and expose it through controlled methods.
+
 Purpose :- 
 Protect data and enforce business rules.
 
 How
-
 private variables
 
 public methods
