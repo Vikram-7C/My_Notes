@@ -359,7 +359,6 @@ Business rule is always protected.
 Basic
 
 Q1. What is Encapsulation?
-
 Answer : Binding data and methods together into one class while restricting
 direct access to data.
 
