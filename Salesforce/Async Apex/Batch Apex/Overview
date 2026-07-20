@@ -601,3 +601,16 @@ Q7. What is the default batch size?
 
 Q8. Can a batch class call another batch class?
 Yes. A common pattern is to start another batch from finish() if you need sequential processing.
+
+
+
+
+
+
+
+
+==================================
+==================================
+
+
+
