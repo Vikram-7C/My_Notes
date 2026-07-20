@@ -402,10 +402,7 @@ And unauthorized modifications are prevented.
 12. CODING INTERVIEW EXAMPLE
 ============================================================
 
-Question
-
-Create a BankAccount class.
-
+Question :- Create a BankAccount class.
 Requirements
 
 Balance cannot become negative.
