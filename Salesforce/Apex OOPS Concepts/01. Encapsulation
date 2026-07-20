@@ -9,5 +9,519 @@ Encapsulation actually has three parts:
 2. Hide the internal data.
 3. Control access through methods or properties.
 
+============================================================
+OOPS CONCEPT #1 - ENCAPSULATION
+============================================================
 
+Definition
+
+Encapsulation is the process of combining data (variables) and
+behavior (methods) into a single unit (class), while restricting
+direct access to the data.
+
+In simple words,
+
+"Hide the data and allow access only through controlled methods."
+
+============================================================
+1. WHAT IS ENCAPSULATION?
+============================================================
+
+Encapsulation means:
+
+✔ Keep variables inside a class.
+✔ Control how those variables are accessed.
+✔ Prevent unauthorized modification.
+
+Everything is packed inside one class.
+
+Example
+
+Customer Class
+
+-----------------------------------
+Customer
+-----------------------------------
+Variables
+- Name
+- Email
+- Phone
+
+Methods
+- getName()
+- setName()
+- getEmail()
+- setEmail()
+
+Everything belongs to one class.
+
+============================================================
+Real-Life Analogy
+============================================================
+
+Think about an ATM.
+
+What you can do
+
+✔ Withdraw Money
+✔ Deposit Money
+✔ Check Balance
+
+What you CANNOT do
+
+✘ Open the ATM machine
+✘ Change your account balance manually
+✘ Modify bank database
+
+You interact only through buttons.
+
+The internal implementation is hidden.
+
+This is Encapsulation.
+
+============================================================
+2. WHY IS ENCAPSULATION USED?
+============================================================
+
+It is used to
+
+• Protect data
+• Prevent invalid data
+• Improve security
+• Make code easier to maintain
+• Hide implementation details
+• Control how data is modified
+
+Without encapsulation
+
+Anyone can modify your variables.
+
+With encapsulation
+
+Only approved methods can modify data.
+
+============================================================
+3. WHERE / WHEN IS IT USED?
+============================================================
+
+Almost everywhere in Salesforce.
+
+Examples
+
+✔ Trigger Handler Classes
+✔ Service Classes
+✔ Utility Classes
+✔ Wrapper Classes
+✔ REST APIs
+✔ LWC Apex Controllers
+✔ Batch Apex
+✔ Queueable Apex
+
+Real Example
+
+Suppose Employee Salary should never become negative.
+
+Instead of allowing
+
+employee.salary = -5000;
+
+We validate it inside a method.
+
+============================================================
+4. HOW IS IT USED?
+============================================================
+
+Using
+
+• private variables
+• public methods
+• getters
+• setters
+
+Syntax
+
+public class Employee{
+
+    private Decimal salary;
+
+    public void setSalary(Decimal amount){
+
+    }
+
+    public Decimal getSalary(){
+
+    }
+
+}
+
+============================================================
+Example 1
+============================================================
+
+Without Encapsulation
+
+public class Employee{
+
+    public Decimal salary;
+
+}
+
+Now anyone can write
+
+Employee e = new Employee();
+
+e.salary = -10000;
+
+Wrong data is stored.
+
+============================================================
+Example 2
+============================================================
+
+Using Encapsulation
+
+public class Employee{
+
+    private Decimal salary;
+
+    public void setSalary(Decimal amount){
+
+        if(amount > 0){
+
+            salary = amount;
+
+        }
+
+    }
+
+    public Decimal getSalary(){
+
+        return salary;
+
+    }
+
+}
+
+Usage
+
+Employee emp = new Employee();
+
+emp.setSalary(50000);
+
+System.debug(emp.getSalary());
+
+Output
+
+50000
+
+Now
+
+emp.setSalary(-2000);
+
+Nothing happens because validation fails.
+
+============================================================
+Salesforce Real-Time Example
+============================================================
+
+Suppose we have
+
+Order Amount
+
+Business Rule
+
+Order Amount cannot be negative.
+
+Instead of
+
+order.Amount__c = -500;
+
+Create a method
+
+setAmount()
+
+Inside it
+
+if(amount >= 0)
+
+Allow
+
+Otherwise
+
+Reject
+
+This protects data integrity.
+
+============================================================
+5. ADVANTAGES
+============================================================
+
+1. Protects data.
+
+2. Prevents invalid values.
+
+3. Improves security.
+
+4. Easier maintenance.
+
+5. Reduces bugs.
+
+6. Centralizes validation.
+
+7. Makes code reusable.
+
+8. Hides implementation details.
+
+============================================================
+6. DISADVANTAGES / LIMITATIONS
+============================================================
+
+1. Slightly more code.
+
+2. Need getter/setter methods.
+
+3. Can become verbose if overused.
+
+4. Poorly designed methods can still expose data incorrectly.
+
+============================================================
+7. ALTERNATIVE APPROACHES
+============================================================
+
+Instead of exposing variables
+
+Use
+
+• Properties (getter/setter)
+
+Example
+
+public String name {get; set;}
+
+Instead of
+
+public String name;
+
+Properties are cleaner and commonly used in Apex.
+
+============================================================
+8. BEST PRACTICES
+============================================================
+
+✔ Keep variables private whenever possible.
+
+✔ Expose data through methods or properties.
+
+✔ Validate data before updating variables.
+
+✔ Never expose sensitive data directly.
+
+✔ Keep business rules inside the class.
+
+✔ Don't make every variable public.
+
+============================================================
+9. COMMON MISTAKES
+============================================================
+
+Mistake 1
+
+Making every variable public.
+
+Wrong
+
+public Decimal salary;
+
+Correct
+
+private Decimal salary;
+
+------------------------------------
+
+Mistake 2
+
+No validation.
+
+salary = -1000;
+
+Always validate.
+
+------------------------------------
+
+Mistake 3
+
+Changing variables directly from another class.
+
+Always use methods.
+
+============================================================
+10. REAL-TIME SALESFORCE SCENARIO
+============================================================
+
+Suppose you are developing an Opportunity Discount feature.
+
+Business Rule
+
+Discount cannot exceed 30%.
+
+Wrong
+
+opp.Discount__c = 80;
+
+Correct
+
+setDiscount(80);
+
+Method
+
+if(discount <=30)
+
+Allow
+
+Else
+
+Throw Exception
+
+Business rule is always protected.
+
+============================================================
+11. INTERVIEW QUESTIONS
+============================================================
+
+Basic
+
+Q1. What is Encapsulation?
+
+Answer
+
+Binding data and methods together into one class while restricting
+direct access to data.
+
+----------------------------------------------------
+
+Q2. Why do we use private variables?
+
+Answer
+
+To prevent unauthorized access and ensure controlled modification.
+
+----------------------------------------------------
+
+Q3. How is Encapsulation achieved in Apex?
+
+Answer
+
+Using
+
+• private variables
+
+• public methods
+
+• getter/setter properties
+
+----------------------------------------------------
+
+Intermediate
+
+Q4. Can Encapsulation improve security?
+
+Answer
+
+Yes.
+
+Because users cannot directly modify internal data.
+
+----------------------------------------------------
+
+Q5. Can we achieve Encapsulation without getter/setter methods?
+
+Answer
+
+Yes.
+
+Using Apex Properties.
+
+Example
+
+public String Name {get; set;}
+
+----------------------------------------------------
+
+Advanced
+
+Q6. Why is Encapsulation important in enterprise applications?
+
+Answer
+
+Because business rules remain centralized, data stays consistent,
+and unauthorized modifications are prevented.
+
+============================================================
+12. CODING INTERVIEW EXAMPLE
+============================================================
+
+Question
+
+Create a BankAccount class.
+
+Requirements
+
+Balance cannot become negative.
+
+User should only deposit and withdraw using methods.
+
+Solution
+
+private Decimal balance;
+
+deposit()
+
+withdraw()
+
+getBalance()
+
+Never expose
+
+balance
+
+directly.
+
+============================================================
+13. SUMMARY (INTERVIEW NOTES)
+============================================================
+
+Definition
+
+Hide data and expose it through controlled methods.
+
+Purpose
+
+Protect data and enforce business rules.
+
+How
+
+private variables
+
+public methods
+
+getter/setter properties
+
+Advantages
+
+✔ Security
+
+✔ Validation
+
+✔ Maintainability
+
+✔ Reusability
+
+Real-Life Example
+
+ATM Machine
+
+Interview One-Liner
+
+"Encapsulation is the process of binding data and methods together
+while restricting direct access to the data."
 
