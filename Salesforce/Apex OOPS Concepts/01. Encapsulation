@@ -282,7 +282,7 @@ Example
 
 public String name {get; set;}
 
-Instead of
+Instead of 
 
 public String name;
 
