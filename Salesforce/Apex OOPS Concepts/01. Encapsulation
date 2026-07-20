@@ -92,9 +92,7 @@ It is used to
 • Hide implementation details
 • Control how data is modified
 
-Without encapsulation
-
-Anyone can modify your variables.
+Without encapsulation, Anyone can modify your variables.
 
 With encapsulation
 
