@@ -1,7 +1,6 @@
 Note:- Encapsulation - Hide data and expose it through methods.
 
 Many developers think Encapsulation = private variables.
-
 That's not completely correct.
 
 Encapsulation actually has three parts:
