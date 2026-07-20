@@ -1,0 +1,4 @@
+1. Encapsulation - Hide data and expose it through methods.
+2. Inheritance - Reuse code from a parent class.
+3. Polymorphism - One interface, many implementations.
+4. Abstraction - Hide implementation and expose only required functionality.
