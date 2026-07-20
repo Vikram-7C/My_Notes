@@ -334,9 +334,7 @@ Suppose you are developing an Opportunity Discount feature.
 
 Business Rule Discount cannot exceed 30%.
 
-Wrong
-
-opp.Discount__c = 80;
+Wrong :- opp.Discount__c = 80;
 
 Correct
 
