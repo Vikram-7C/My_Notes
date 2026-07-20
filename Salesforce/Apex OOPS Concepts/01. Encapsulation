@@ -425,8 +425,7 @@ directly.
 13. SUMMARY (INTERVIEW NOTES)
 ============================================================
 
-Definition
-
+Definition :- 
 Hide data and expose it through controlled methods.
 
 Purpose
