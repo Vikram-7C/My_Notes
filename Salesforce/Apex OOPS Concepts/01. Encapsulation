@@ -274,7 +274,7 @@ This protects data integrity.
 
 Instead of exposing variables
 Use Properties (getter/setter)
-Example
+Example :- 
 
 public String name {get; set;}
 
