@@ -324,7 +324,6 @@ Always validate.
 Mistake 3
 
 Changing variables directly from another class.
-
 Always use methods.
 
 ============================================================
