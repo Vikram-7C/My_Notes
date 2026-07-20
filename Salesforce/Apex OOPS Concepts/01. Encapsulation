@@ -93,7 +93,6 @@ It is used to
 • Control how data is modified
 
 Without encapsulation, Anyone can modify your variables.
-
 With encapsulation, Only approved methods can modify data.
 
 ============================================================
