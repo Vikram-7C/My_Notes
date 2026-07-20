@@ -403,9 +403,7 @@ And unauthorized modifications are prevented.
 ============================================================
 
 Question :- Create a BankAccount class.
-Requirements
-
-Balance cannot become negative.
+Requirements :- Balance cannot become negative.
 
 User should only deposit and withdraw using methods.
 
