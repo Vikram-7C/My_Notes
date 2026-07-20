@@ -102,7 +102,6 @@ With encapsulation, Only approved methods can modify data.
 Almost everywhere in Salesforce.
 
 Examples
-
 ✔ Trigger Handler Classes
 ✔ Service Classes
 ✔ Utility Classes
