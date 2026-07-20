@@ -94,9 +94,7 @@ It is used to
 
 Without encapsulation, Anyone can modify your variables.
 
-With encapsulation
-
-Only approved methods can modify data.
+With encapsulation, Only approved methods can modify data.
 
 ============================================================
 3. WHERE / WHEN IS IT USED?
