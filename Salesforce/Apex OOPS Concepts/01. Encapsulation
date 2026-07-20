@@ -296,9 +296,7 @@ Properties are cleaner and commonly used in Apex.
 ✔ Expose data through methods or properties.
 ✔ Validate data before updating variables.
 ✔ Never expose sensitive data directly.
-
 ✔ Keep business rules inside the class.
-
 ✔ Don't make every variable public.
 
 ============================================================
