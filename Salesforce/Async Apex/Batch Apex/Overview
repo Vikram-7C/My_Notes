@@ -607,4 +607,193 @@ Yes. A common pattern is to start another batch from finish() if you need sequen
 ==================================
 
 
+===========================================
+Why do we use "global" in a Batch Apex Class?
+===========================================
 
+1. First, understand the access modifiers
+
+private
+-------
+- Accessible only within the same class.
+- Cannot be accessed by other classes.
+
+Example:
+private Integer count;
+
+---------------------------------------------------------
+
+public
+------
+- Accessible within the same namespace.
+- Can be used by other Apex classes in the same org/package.
+- Cannot be accessed outside a managed package.
+
+Example:
+public class AccountService {
+}
+
+---------------------------------------------------------
+
+protected
+---------
+- Accessible within the same class and its subclasses.
+- Mainly used for inheritance.
+
+Example:
+protected void processData() {
+}
+
+---------------------------------------------------------
+
+global
+------
+- Highest level of access.
+- Accessible from any Apex code.
+- Accessible outside a managed package.
+- Required when a class or method needs to be exposed externally.
+
+Example:
+global class AccountBatch {
+}
+
+===========================================================
+Why do most Batch Apex examples use "global"?
+===========================================================
+
+A Batch Apex class implements the Database.Batchable interface.
+
+Example:
+
+global class AccountBatch implements Database.Batchable<SObject>
+
+Historically, Salesforce documentation used "global" because Batch Apex classes
+were commonly designed to be reusable and accessible from anywhere, including
+managed packages.
+
+However, in a normal Salesforce org (not a managed package), a Batch Apex class
+does NOT have to be global.
+
+You can write:
+
+public class AccountBatch implements Database.Batchable<SObject>
+
+and it works perfectly.
+
+===========================================================
+When should I use "public"?
+===========================================================
+
+Use "public" if:
+
+- Your org is not a managed package.
+- The batch class is used only inside your org.
+- No external package needs access.
+
+Example:
+
+public class AccountBatch implements Database.Batchable<SObject> {
+
+    public Database.QueryLocator start(Database.BatchableContext bc){
+        ...
+    }
+
+    public void execute(Database.BatchableContext bc, List<Account> scope){
+        ...
+    }
+
+    public void finish(Database.BatchableContext bc){
+        ...
+    }
+}
+
+This is the recommended approach for most projects.
+
+===========================================================
+When should I use "global"?
+===========================================================
+
+Use "global" only when:
+
+1. You're developing a Managed Package.
+2. Other orgs need to access your class.
+3. The class is part of a public API.
+4. Salesforce requires the class to be globally visible for package consumers.
+
+Example:
+
+global class AccountBatch implements Database.Batchable<SObject> {
+}
+
+===========================================================
+Why NOT use global unnecessarily?
+===========================================================
+
+1. It exposes your class more than necessary.
+2. Once released in a managed package, changing or removing global members is
+   highly restricted because other orgs may depend on them.
+3. It breaks the principle of least privilege.
+4. It increases long-term maintenance complexity.
+
+Rule:
+Give only the minimum access required.
+
+===========================================================
+Batch Class Access Modifier Summary
+===========================================================
+
+private
+- Cannot be used for a Batch class because Database.executeBatch() from another
+  class cannot access it.
+
+protected
+- Not suitable for a top-level Batch class.
+- Mainly intended for inherited members.
+
+public
+- Recommended for almost all Batch classes in normal Salesforce orgs.
+- Accessible throughout your org.
+
+global
+- Use only for Managed Packages or when external access is required.
+
+===========================================================
+Comparison
+===========================================================
+
+Access Modifier    Same Class   Same Org   Managed Package Consumer
+-------------------------------------------------------------------
+private               Yes          No                No
+protected             Yes      Limited*              No
+public                Yes         Yes                No
+global                Yes         Yes               Yes
+
+*Protected is available within subclasses (and package context where applicable).
+
+===========================================================
+Interview Question
+===========================================================
+
+Q: Why do many Batch Apex examples use "global"?
+
+Answer:
+
+Most Salesforce examples use "global" because they are written to be compatible
+with managed packages and external access. In a normal Salesforce org, "public"
+is sufficient for Batch Apex. Use "global" only when your class must be exposed
+outside the package or org.
+
+===========================================================
+Best Practice
+===========================================================
+
+Normal Salesforce Org
+---------------------
+public class AccountBatch implements Database.Batchable<SObject>
+
+Managed Package
+---------------
+global class AccountBatch implements Database.Batchable<SObject>
+
+Always choose the least permissive access modifier that satisfies your
+requirement.
