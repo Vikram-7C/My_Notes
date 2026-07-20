@@ -431,7 +431,7 @@ Hide data and expose it through controlled methods.
 Purpose :- 
 Protect data and enforce business rules.
 
-How
+How :- 
 private variables
 
 public methods
