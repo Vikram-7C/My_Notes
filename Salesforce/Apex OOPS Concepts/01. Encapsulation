@@ -386,7 +386,6 @@ Answer Yes, Because users cannot directly modify internal data.
 ----------------------------------------------------
 
 Q5. Can we achieve Encapsulation without getter/setter methods?
-
 Answer :- Yes, Using Apex Properties.
 
 Example :- public String Name {get; set;}
@@ -396,7 +395,6 @@ Example :- public String Name {get; set;}
 Advanced
 
 Q6. Why is Encapsulation important in enterprise applications?
-
 Answer
 
 Because business rules remain centralized, data stays consistent,
