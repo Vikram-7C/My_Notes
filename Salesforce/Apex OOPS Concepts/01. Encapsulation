@@ -336,7 +336,7 @@ Business Rule Discount cannot exceed 30%.
 
 Wrong :- opp.Discount__c = 80;
 
-Correct
+Correct :- 
 
 setDiscount(80);
 
