@@ -282,7 +282,7 @@ Example
 
 public String name {get; set;}
 
-Instead ofpublic String name;
+Instead of public String name;
 
 Properties are cleaner and commonly used in Apex.
 
