@@ -264,11 +264,8 @@ This protects data integrity.
 ============================================================
 
 1. Slightly more code.
-
 2. Need getter/setter methods.
-
 3. Can become verbose if overused.
-
 4. Poorly designed methods can still expose data incorrectly.
 
 ============================================================
