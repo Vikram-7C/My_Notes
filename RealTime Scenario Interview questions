@@ -15,3 +15,89 @@ trigger OpportunityTrigger on Opportunity (after insert, after update, after del
 
 =============================================================================================================
 
+/**
+ * @description Handler class for Opportunity trigger events adhering to enterprise design patterns.
+ *              Maintains aggregate metrics on parent Account records.
+ */
+public with sharing class OpportunityTriggerHandler {
+
+    /**
+     * @description Public entry point to handle roll-up logic after Insert, Update, Delete, and Undelete operations.
+     * @param newOppList List of new Opportunity records (Trigger.new)
+     * @param oldOppMap Map of old Opportunity records (Trigger.oldMap)
+     */
+    public static void handleAfterEvents(List<Opportunity> newOppList, Map<Id, Opportunity> oldOppMap) {
+        Set<Id> accountIdsToUpdate = new Set<Id>();
+
+        // Process Insert, Update, and Undelete events
+        if (newOppList != null) {
+            for (Opportunity opp : newOppList) {
+                // Add current AccountId on Insert, Undelete, or Update
+                if (opp.AccountId != null) {
+                    accountIdsToUpdate.add(opp.AccountId);
+                }
+
+                // Handle reparenting scenario on Update
+                if (oldOppMap != null && oldOppMap.containsKey(opp.Id)) {
+                    Opportunity oldOpp = oldOppMap.get(opp.Id);
+                    if (oldOpp.AccountId != null && oldOpp.AccountId != opp.AccountId) {
+                        accountIdsToUpdate.add(oldOpp.AccountId);
+                    }
+                }
+            }
+        }
+
+        // Process Delete events
+        if (newOppList == null && oldOppMap != null) {
+            for (Opportunity oldOpp : oldOppMap.values()) {
+                if (oldOpp.AccountId != null) {
+                    accountIdsToUpdate.add(oldOpp.AccountId);
+                }
+            }
+        }
+
+        // Trigger roll-up computation if there are Accounts to update
+        if (!accountIdsToUpdate.isEmpty()) {
+            updateAccountOpportunityCount(accountIdsToUpdate);
+        }
+    }
+
+    /**
+     * @description Recalculates and updates the total Opportunity count on specified Account IDs.
+     * @param accountIds Set of Account IDs requiring count recalculation.
+     */
+    private static void updateAccountOpportunityCount(Set<Id> accountIds) {
+        Map<Id, Account> accountsToUpdateMap = new Map<Id, Account>();
+
+        // 1. Initialize affected accounts with count = 0 (ensures correct count if all Opps are deleted/reparented)
+        for (Id accId : accountIds) {
+            accountsToUpdateMap.put(accId, new Account(Id = accId, Total_Opportunities__c = 0));
+        }
+
+        // 2. Aggregate count of Opportunities grouped by AccountId
+        for (AggregateResult ar : [
+            SELECT AccountId accId, COUNT(Id) oppCount 
+            FROM Opportunity 
+            WHERE AccountId IN :accountIds 
+            WITH USER_MODE
+            GROUP BY AccountId
+        ]) {
+            Id accId = (Id) ar.get('accId');
+            Integer count = (Integer) ar.get('oppCount');
+            
+            if (accountsToUpdateMap.containsKey(accId)) {
+                accountsToUpdateMap.get(accId).Total_Opportunities__c = count;
+            }
+        }
+
+        // 3. Perform bulkified DML update with exception handling
+        if (!accountsToUpdateMap.isEmpty()) {
+            try {
+                update accountsToUpdateMap.values();
+            } catch (DmlException ex) {
+                // Log exception to custom logger framework or handle error accordingly
+                System.debug(LoggingLevel.ERROR, 'Failed to update Account opportunity counts: ' + ex.getMessage());
+            }
+        }
+    }
+}
