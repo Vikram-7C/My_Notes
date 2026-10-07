@@ -1,0 +1,17 @@
+/**
+ * @description Logic-less Trigger for Opportunity object following best practices.
+ */
+trigger OpportunityTrigger on Opportunity (after insert, after update, after delete, after undelete) {
+
+    if (Trigger.isAfter) {
+        if (Trigger.isInsert || Trigger.isUpdate || Trigger.isUndelete) {
+            OpportunityTriggerHandler.handleAfterEvents(Trigger.new, Trigger.oldMap);
+        } else if (Trigger.isDelete) {
+            OpportunityTriggerHandler.handleAfterEvents(null, Trigger.oldMap);
+        }
+    }
+}
+
+
+=============================================================================================================
+
